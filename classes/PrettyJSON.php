@@ -72,7 +72,11 @@ class PrettyJSON
 	 */
 	public function getHtml()
 	{
-		return static::printHtml($this->data);
+		if (is_array($this->data)) {
+			return static::printHtml($this->data);
+		} else {
+			return static::renderSimpleValue($this->data);
+		}
 	}
 
 	/**
@@ -82,8 +86,12 @@ class PrettyJSON
 	 *
 	 * @return string
 	 */
-	private static function printHtml(array $data, $headerKey = null, $isEndComma = false)
+	private static function printHtml($data, $headerKey = null, $isEndComma = false)
 	{
+		if (is_null($data)) {
+			return static::renderSimpleValue($data);
+		}
+
 		$html    = '<div style="font-family: \'droid sans mono\', consolas, monospace, \'courier new\', courier, sans-serif, monospace;white-space: pre;">';
 		$isAssoc = static::isAssoc($data);
 		$keyHtml = '';
