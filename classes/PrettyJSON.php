@@ -139,39 +139,45 @@ class PrettyJSON
 		return $html;
 	}
 
-	private static function renderSimpleValue($value)
+	/**
+	 * Render simple value
+	 *
+	 * @param $value
+	 *
+	 * @return string
+	 */
+	private static function renderSimpleValue($value):string
 	{
-		$type   = gettype($value);
-		$return = '';
+		$type = gettype($value);
 
 		switch ($type) {
 			case 'string':
-				$return = '<span style="color: #45A139;">"' . $value . '"</span>';
-				break;
+				return '<span style="color: #45A139;">"' . $value . '"</span>';
 			case 'number':
 			case 'integer':
 			case 'double':
-				$return = '<span style="color: #FF6F6F">' . $value . '</span>';
-				break;
+				return '<span style="color: #FF6F6F">' . $value . '</span>';
 			case 'boolean':
-				$str    = [true => 'true', false => 'false'];
-				$return = '<span style="color: #FFA32D;">' . $str[$value] . '</span>';
-				break;
-			case 'NULL':
-				$color  = static::COLOR_GRAY;
-				$return = "<span style=\"color:{$color};\">null</span>";
-				break;
-			default:
-				$return = '<span>' . $value . ' (' . $type . ')</span>';
-				break;
-		}
+				$str = [true => 'true', false => 'false'];
 
-		return $return;
+				return '<span style="color: #FFA32D;">' . $str[$value] . '</span>';
+			case 'NULL':
+				$color = static::COLOR_GRAY;
+
+				return "<span style=\"color:{$color};\">null</span>";
+			default:
+				return '<span>' . $value . ' (' . $type . ')</span>';
+		}
 	}
 
-	private static function isAssoc($arr)
+	/**
+	 * @param array $array
+	 *
+	 * @return bool
+	 */
+	private static function isAssoc(array $array)
 	{
-		return array_keys($arr) !== range(0, count($arr) - 1);
+		return array_keys($array) !== range(0, count($array) - 1);
 	}
 
 }
