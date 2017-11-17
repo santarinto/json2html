@@ -8,18 +8,20 @@
  */
 class PrettyJSON
 {
+	const COLOR_GRAY = 'gray';
+
 	private $data = [];
 	private $error = '';
 
 	/**
 	 * @param string $json
 	 *
-	 * @throws \common\Exception
+	 * @throws \Exception
 	 */
 	public function setJsonText($json)
 	{
 		if (!is_string($json)) {
-			throw new \common\Exception('Param "json" not a string');
+			throw new \Exception('Param "json" not a string');
 		}
 
 		$this->data = json_decode($json, true, 1024);
@@ -154,6 +156,10 @@ class PrettyJSON
 			case 'boolean':
 				$str    = [true => 'true', false => 'false'];
 				$return = '<span style="color: #FFA32D;">' . $str[$value] . '</span>';
+				break;
+			case 'NULL':
+				$color  = static::COLOR_GRAY;
+				$return = "<span style=\"color:{$color};\">null</span>";
 				break;
 			default:
 				$return = '<span>' . $value . ' (' . $type . ')</span>';
