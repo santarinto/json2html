@@ -25,7 +25,17 @@ class PrettyJSON
 	 *
 	 * @param array|Options $options
 	 */
-	public function __construct(Options $options)
+	public function __construct(Options $options = null)
+	{
+		$this->options = $options;
+	}
+
+	/**
+	 * Update options
+	 *
+	 * @param Options $options
+	 */
+	public function setOptions(Options $options)
 	{
 		$this->options = $options;
 	}

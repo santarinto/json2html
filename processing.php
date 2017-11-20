@@ -4,8 +4,8 @@ use json2html\Options;
 use json2html\PrettyJSON;
 
 require 'vendor/autoload.php';
-require 'classes/json2html/Options.php';
-require 'classes/json2html/PrettyJSON.php';
+require 'src/json2html/Options.php';
+require 'src/json2html/PrettyJSON.php';
 
 $error = '';
 $rHtml = '';
