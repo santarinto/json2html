@@ -6,7 +6,15 @@
  * Time: 12:37
  */
 
-class Options extends Pimple\Container
+namespace json2html;
+
+use Pimple\Container;
+
+/**
+ * Class Options
+ * @package json2html
+ */
+class Options extends Container
 {
 	/**
 	 * Options constructor.

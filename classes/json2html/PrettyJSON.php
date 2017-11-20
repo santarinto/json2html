@@ -1,5 +1,7 @@
 <?php
 
+namespace json2html;
+
 /**
  * Created by PhpStorm.
  * User: i.glazkov

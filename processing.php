@@ -1,7 +1,11 @@
 <?php # processing.php
+
+use json2html\Options;
+use json2html\PrettyJSON;
+
 require 'vendor/autoload.php';
-require 'classes/Options.php';
-require 'classes/PrettyJSON.php';
+require 'classes/json2html/Options.php';
+require 'classes/json2html/PrettyJSON.php';
 
 $error = '';
 $rHtml = '';

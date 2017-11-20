@@ -1,5 +1,39 @@
 {
+  "name": "santarinto/json2html",
+  "description": "Generate colorized HTML for json data",
+  "type": "library",
+  "keywords": [
+    "santarinto",
+    "json2html",
+    "convert",
+    "json",
+    "html"
+  ],
+  "homepage": "https://github.com/santarinto/json2html",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Glazkov Ilya aka Santarinto",
+      "email": "santarinto@yandex.ru",
+      "homepage": "santarinto.com",
+      "role": "Developer"
+    }
+  ],
   "require": {
+    "php": "~5.6|~7.0",
     "pimple/pimple": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "santarinto\\json2html\\": "src"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  },
+  "config": {
+    "sort-packages": true
   }
 }
