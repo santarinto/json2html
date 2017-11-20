@@ -9,6 +9,7 @@
     "json",
     "html"
   ],
+  "version": "1.0.0",
   "homepage": "https://github.com/santarinto/json2html",
   "license": "MIT",
   "authors": [
