@@ -25,8 +25,8 @@
     "pimple/pimple": "*"
   },
   "autoload": {
-    "psr-4": {
-      "santarinto\\json2html\\": "src"
+    "psr-0": {
+      "json2html": "src/"
     }
   },
   "extra": {
