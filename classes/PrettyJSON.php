@@ -8,10 +8,25 @@
  */
 class PrettyJSON
 {
-	const COLOR_GRAY = 'gray';
+	const COLOR_BRACKET = 'gray';
 
 	private $data = [];
 	private $error = '';
+
+	/**
+	 * @var array|Options
+	 */
+	private $options = [];
+
+	/**
+	 * PrettyJSON constructor.
+	 *
+	 * @param array|Options $options
+	 */
+	public function __construct(Options $options)
+	{
+		$this->options = $options;
+	}
 
 	/**
 	 * @param string $json
@@ -75,7 +90,7 @@ class PrettyJSON
 	public function getHtml()
 	{
 		if (is_array($this->data)) {
-			return static::printHtml($this->data);
+			return $this->printHtml($this->data);
 		} else {
 			return static::renderSimpleValue($this->data);
 		}
@@ -88,13 +103,13 @@ class PrettyJSON
 	 *
 	 * @return string
 	 */
-	private static function printHtml($data, $headerKey = null, $isEndComma = false)
+	private function printHtml($data, $headerKey = null, $isEndComma = false)
 	{
 		if (is_null($data)) {
 			return static::renderSimpleValue($data);
 		}
 
-		$html    = '<div style="font-family: \'droid sans mono\', consolas, monospace, \'courier new\', courier, sans-serif, monospace;white-space: pre;">';
+		$html    = '';
 		$isAssoc = static::isAssoc($data);
 		$keyHtml = '';
 
@@ -103,8 +118,14 @@ class PrettyJSON
 			$keyHtml .= '<span style="color:#A1A1A1;">:&nbsp;</span>';
 		}
 
-		$html .= '<div style="color:#A1A1A1;">' . $keyHtml . ($isAssoc ? '{' : '[') . '</div>';
-		$html .= '<div style="padding-left:20px;">';
+		$styleElement = 'padding-left:20px;';
+
+		if ($this->options->getIsOnlyColorize()) {
+			$styleElement = 'display: inline;';
+		}
+
+		$html .= $this->buildBracket($keyHtml . ($isAssoc ? '{' : '['));
+		$html .= "<div style=\"$styleElement\">";
 
 		$count     = count($data);
 		$iteration = 0;
@@ -115,7 +136,13 @@ class PrettyJSON
 			if (is_array($value)) {
 				$html .= static::printHtml($value, $isAssoc ? $key : null, $isComma);
 			} else {
-				$html .= '<div>';
+				$styleBlock = '';
+
+				if ($this->options->getIsOnlyColorize()) {
+					$styleBlock = 'display: inline;';
+				}
+
+				$html .= "<div style=\"$styleBlock\">";
 
 				if ($isAssoc) {
 					$html .= '<span style="color: #404040;">"' . $key . '"</span>';
@@ -133,10 +160,38 @@ class PrettyJSON
 		}
 
 		$html .= '</div>';
-		$html .= '<div style="color:#A1A1A1;">' . ($isAssoc ? '}' : ']') . ($isEndComma ? ',' : '') . '</div>';
-		$html .= '</div>';
+		$html .= $this->buildBracket(($isAssoc ? '}' : ']') . ($isEndComma ? ',' : ''));
+
+		$html = $this->wrapInMainDiv($html);
 
 		return $html;
+	}
+
+	private function buildBracket(string $symbol = '{'): string
+	{
+		$styleBracket = 'color: ' . static::COLOR_BRACKET . ';';
+
+		if ($this->options->getIsOnlyColorize()) {
+			$styleBracket .= 'display: inline-block;';
+		}
+
+		return "<div style=\"$styleBracket\">$symbol</div>";
+	}
+
+	private function wrapInMainDiv(string $html): string
+	{
+		$style = 'font-family: \'droid sans mono\', consolas, monospace, \'courier new\', courier, sans-serif, monospace;';
+
+		if ($this->options->getIsOnlyColorize()) {
+			$style .= 'display: inline;';
+		} else {
+			$style .= 'white-space: pre;';
+		}
+
+		$sDiv = "<div style=\"$style\">";
+		$eDiv = '</div>';
+
+		return "$sDiv$html$eDiv";
 	}
 
 	/**
@@ -146,7 +201,7 @@ class PrettyJSON
 	 *
 	 * @return string
 	 */
-	private static function renderSimpleValue($value):string
+	private static function renderSimpleValue($value): string
 	{
 		$type = gettype($value);
 
@@ -162,7 +217,7 @@ class PrettyJSON
 
 				return '<span style="color: #FFA32D;">' . $str[$value] . '</span>';
 			case 'NULL':
-				$color = static::COLOR_GRAY;
+				$color = static::COLOR_BRACKET;
 
 				return "<span style=\"color:{$color};\">null</span>";
 			default:
