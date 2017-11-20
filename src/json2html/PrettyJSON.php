@@ -27,7 +27,7 @@ class PrettyJSON
 	 */
 	public function __construct(Options $options = null)
 	{
-		$this->options = $options;
+		$this->options = $options ?? new Options();
 	}
 
 	/**
