@@ -164,7 +164,7 @@ class PrettyJSON
 				$html .= static::renderSimpleValue($value);
 
 				if ($isComma) {
-					$html .= '<span style="color:#A1A1A1;">,</span>';
+					$html .= $this->buildComma();
 				}
 
 				$html .= '</div>';
@@ -172,7 +172,9 @@ class PrettyJSON
 		}
 
 		$html .= '</div>';
-		$html .= $this->buildBracket(($isAssoc ? '}' : ']') . ($isEndComma ? ',' : ''));
+
+		$comma = $isEndComma ? $this->buildComma(false) : '';
+		$html  .= $this->buildBracket(($isAssoc ? '}' : ']') . $comma);
 
 		$html = $this->wrapInMainDiv($html);
 
@@ -188,6 +190,19 @@ class PrettyJSON
 		}
 
 		return "<div style=\"$styleBracket\">$symbol</div>";
+	}
+
+	private function buildComma($wrapTag = true, $s = ','): string
+	{
+		if ($this->options->getIsOnlyColorize()) {
+			$s .= ' ';
+		}
+
+		if ($wrapTag) {
+			return '<span style="color:' . static::COLOR_BRACKET . ';">,</span>';
+		} else {
+			return $s;
+		}
 	}
 
 	private function wrapInMainDiv(string $html): string
